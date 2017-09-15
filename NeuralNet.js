@@ -1,15 +1,17 @@
 var NeuronLayer = require('./NeuronLayer');
 
-function NeuralNet() {
+const bias = 1;
+const activationResponse = 1;
 
-  this.inputs = 4;
-  this.outputs = 2;
-  this.hiddenLayers = 2;
-  this.neronsPerHiddenLayer = 10;
-  this.hiddenLayerList = [];
+function NeuralNet() {
+  this.numInputs = 4;
+  this.numOutputs = 2;
+  this.numHiddenLayers = 2;
+  this.neuronsPerHiddenLayer = 10;
+  this.hiddenLayers = [];
   
   for (let i=0; i<this.hiddenLayers; i++) {
-    this.hiddenLayerList[i] = new NeuronLayer(this.neronsPerHiddenLayer, this.neronsPerHiddenLayer);
+    this.hiddenLayers[i] = new NeuronLayer(this.neuronsPerHiddenLayer, this.neuronsPerHiddenLayer);
   }
 }
 
@@ -27,6 +29,39 @@ NeuralNet.prototype.putWeights = function(weights) {
 
 NeuralNet.prototype.update = function(inputs) {
 
+  var outputs = [];
+  
+  if (inputs.length == this.numInputs) {
+     
+    // For each layer
+    for (let i=0; i<this.numHiddenLayers; i++) {
+    
+      if (i>0) {
+        inputs = outputs; // function for copy?
+      }
+      
+      // For each neuron
+      for (let j=0; j<this.hiddenLayers.numNeurons; j++) {
+        var netInput = 0;
+        var numInputs = this.hiddenLayers[i].neurons[j].numInputs;
+        
+        // For each weight
+        for (let k=0; numInputs; k++) {
+          netInput += this.hiddenLayers[i].neurons[j].weights[k] * inputs[k];
+        }
+        
+        // add in the bias
+        netInput += this.hiddenLayers[i].neurons[j].weights[numInputs-1] * bias; 
+        
+        // store the outputs from each layer
+        outputs.push(this.sigmoid(netInput, activationResponse));
+      }
+      
+      outputs = [];
+    }
+  }
+  
+  return outputs;
 }
 
 NeuralNet.prototype.sigmoid = function(activation, response) {
