@@ -82,7 +82,7 @@ NeuralNet.prototype.putWeights = function(weights) {
 }
 
 
-//
+// pass inputs to net and get outputs
 NeuralNet.prototype.update = function(inputs) {
 
   var outputs = [];
