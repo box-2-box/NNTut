@@ -101,6 +101,31 @@ NeuralNet.prototype.update = function(inputs) {
 
       // clear previous values from the output array
       outputs = [];
+      
+      // For each neuron
+      for (let j=0; j<this.hiddenLayers.numNeurons; j++) {
+        var netInput = 0;
+        var numInputs = this.hiddenLayers[i].neurons[j].numInputs;
+        
+        // For each weight
+        for (let k=0; numInputs; k++) {
+          netInput += this.hiddenLayers[i].neurons[j].weights[k] * inputs[k];
+        }
+        
+        // add in the bias
+        netInput += this.hiddenLayers[i].neurons[j].weights[numInputs-1] * bias; 
+        
+        // store the outputs from each layer
+        outputs.push(this.sigmoid(netInput, activationResponse));
+      }
+      
+      outputs = [];
+    }
+  }
+  
+  return outputs;
+}
+
 
       var netInput = 0;
       // For each neuron
